@@ -159,7 +159,9 @@ public class GameLogic implements PlayableLogic{
                 }
                 if(apperance == false){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
 
-                isGameFinished();
+                if(isGameFinished() && isKingAtEdge()){defenceWin();}
+                if(isGameFinished() && theKingIsSurrunder()){attackWin();}
+
                 return true;
             }
             if (a.get_y() == b.get_y()) {
@@ -188,7 +190,8 @@ public class GameLogic implements PlayableLogic{
                 }
                 if(apperance == false){forCompare4.add(b);b.addString(map[b.get_x()][b.get_y()].get_ID());}
 
-                isGameFinished();
+                if(isGameFinished() && isKingAtEdge()){defenceWin();}
+                if(isGameFinished() && theKingIsSurrunder()){attackWin();}
 
                 return true;
             }
@@ -214,7 +217,7 @@ public class GameLogic implements PlayableLogic{
     public boolean isGameFinished() {
        if(isKingAtEdge()){//Possibility of victory for the defender
 
-           ConcretePiece [] copy = new ConcretePiece[defencePositions.length];
+/*           ConcretePiece [] copy = new ConcretePiece[defencePositions.length];
            for (int i = 0; i < defencePositions.length; i++) {
                copy[i] = defencePositions[i];
            }
@@ -256,13 +259,13 @@ public class GameLogic implements PlayableLogic{
            sortByPiece();
 
            for (int i = 0; i < 75; i++) {System.out.print("*");}
-           System.out.println();
+           System.out.println();*/
 
            return true;}
 
        if(theKingIsSurrunder()){//Possibility of victory for the attacker
 
-           ConcretePiece [] copy1 = new ConcretePiece[attackPositions.length];
+           /*ConcretePiece [] copy1 = new ConcretePiece[attackPositions.length];
            for (int i = 0; i < attackPositions.length; i++) {
                copy1[i] = attackPositions[i];
            }
@@ -304,7 +307,7 @@ public class GameLogic implements PlayableLogic{
            sortByPiece();
 
            for (int i = 0; i < 75; i++) {System.out.print("*");}
-           System.out.println();
+           System.out.println();*/
 
            return true;}
 
@@ -577,6 +580,96 @@ public class GameLogic implements PlayableLogic{
             System.out.print("(" + copy[i].get_x() +"," + " " + copy[i].get_y() + ")");
             System.out.println(copy[i]._howManyPiecesWalkHere.size()+ " " + "pieces");
         }
+    }
+public void defenceWin (){
+    ConcretePiece [] copy = new ConcretePiece[defencePositions.length];
+    for (int i = 0; i < defencePositions.length; i++) {
+        copy[i] = defencePositions[i];
+    }
+    Arrays.sort(copy,new ComparatorBySteps());
+    for (int i = 0; i < copy.length; i++) {
+        if(copy[i]._positions.size() == 1){continue;}
+        System.out.print(copy[i].get_ID() + ":" + " ");
+        System.out.print("[");
+        copy[i].getAllPositions();
+        System.out.println("]");
+    }
+    ConcretePiece [] copy1 = new ConcretePiece[attackPositions.length];
+    for (int i = 0; i < attackPositions.length; i++) {
+        copy1[i] = attackPositions[i];
+    }
+    Arrays.sort(copy1,new ComparatorBySteps());
+    for (int i = 0; i < copy1.length; i++) {
+        if(copy1[i]._positions.size() == 1){continue;}
+        System.out.print(copy1[i].get_ID() + ":" + " ");
+        System.out.print("[");
+        copy1[i].getAllPositions();
+        System.out.println("]");
+
+    }
+    for (int i = 0; i < 75; i++) {System.out.print("*");}
+    System.out.println();
+
+    defender.setIfYouWinGetTrue(true);
+    sortByKills();
+
+    for (int i = 0; i < 75; i++) {System.out.print("*");}
+    System.out.println();
+
+    sortBySquare();
+
+    for (int i = 0; i < 75; i++) {System.out.print("*");}
+    System.out.println();
+
+    sortByPiece();
+
+    for (int i = 0; i < 75; i++) {System.out.print("*");}
+    System.out.println();
+    }
+    public void attackWin (){
+        ConcretePiece [] copy1 = new ConcretePiece[attackPositions.length];
+        for (int i = 0; i < attackPositions.length; i++) {
+            copy1[i] = attackPositions[i];
+        }
+        Arrays.sort(copy1,new ComparatorBySteps());
+        for (int i = 0; i < copy1.length; i++) {
+            if(copy1[i]._positions.size() == 1){continue;}
+            System.out.print(copy1[i].get_ID() + ":" + " ");
+            System.out.print("[");
+            copy1[i].getAllPositions();
+            System.out.println("]");
+
+        }
+        ConcretePiece [] copy = new ConcretePiece[defencePositions.length];
+        for (int i = 0; i < defencePositions.length; i++) {
+            copy[i] = defencePositions[i];
+        }
+        Arrays.sort(copy,new ComparatorBySteps());
+        for (int i = 0; i < copy.length; i++) {
+            if(copy[i]._positions.size() == 1){continue;}
+            System.out.print(copy[i].get_ID() + ":" + " ");
+            System.out.print("[");
+            copy[i].getAllPositions();
+            System.out.println("]");
+        }
+        for (int i = 0; i < 75; i++) {System.out.print("*");}
+        System.out.println();
+
+        attacker.setIfYouWinGetTrue(true);
+        sortByKills();
+
+        for (int i = 0; i < 75; i++) {System.out.print("*");}
+        System.out.println();
+
+        sortBySquare();
+
+        for (int i = 0; i < 75; i++) {System.out.print("*");}
+        System.out.println();
+
+        sortByPiece();
+
+        for (int i = 0; i < 75; i++) {System.out.print("*");}
+        System.out.println();
     }
 
 }
